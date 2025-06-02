@@ -6,7 +6,8 @@ export interface PingItemFromLS {
   interval: number,
   lastExecuted: string,
   lastFive: ('P' | 'F')[],
-  tags: string[]
+  tags: string[],
+  isPaused: boolean
 }
 
 const updateLastFive = (lastFive: ('P' | 'F')[], newResult: 'P' | 'F'): ('P' | 'F')[] => {
@@ -22,7 +23,7 @@ export const usePing = () => {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<PingItemFromLS[] | []>([]);
 
-  const updateLocalStorage = (ip: string, interval: number, tags: string[], status: 'P' | 'F') => {
+  const updateLocalStorage = (ip: string, interval: number, tags: string[], status: 'P' | 'F', isPaused: boolean) => {
     const existingData = localStorage.getItem('data');
     const dataFromLs: PingItemFromLS[] = existingData ? JSON.parse(existingData) : [];
     const existingItemIndex = dataFromLs.findIndex(item => item.url === ip);
@@ -37,7 +38,8 @@ export const usePing = () => {
         lastFive: updatedLastFive,
         lastExecuted: now,
         interval, 
-        tags
+        tags,
+        isPaused
       };
     } else {
       dataFromLs.push({
@@ -45,7 +47,8 @@ export const usePing = () => {
         interval,
         tags,
         lastFive: [status],
-        lastExecuted: now
+        lastExecuted: now,
+        isPaused
       });
     }
     
@@ -62,14 +65,14 @@ export const usePing = () => {
 
       if (response.data) {
         alert('Ping created successfully!');
-        updateLocalStorage(ip, interval, tags, 'P');
+        updateLocalStorage(ip, interval, tags, 'P', false);
       }
     } catch (err) {
       console.log(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       setError(message);
       alert("Error pinging host");
-      updateLocalStorage(ip, interval, tags, 'F');
+      updateLocalStorage(ip, interval, tags, 'F', false);
       return null;
     } finally {
       setIsLoading(false);

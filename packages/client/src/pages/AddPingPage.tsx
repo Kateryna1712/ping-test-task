@@ -29,7 +29,7 @@ function AddPingPage() {
         <TextInput
           type="number"
           placeholder="Interval (seconds)"
-          value={interval}
+          value={String(interval)}
           setValue={(val) => setInterval(Number(val))}
         />
         <TextInput
