@@ -1,0 +1,31 @@
+import { useState } from "react";
+import TextInput from "../components/UI/TextInput";
+import Button from "../components/UI/Button";
+
+function AddPingPage() {
+  const [url, setUrl] = useState("");
+  const [interval, setInterval] = useState("");
+  const [tags, setTags] = useState("");
+
+  return (
+    <div className="flex w-[100vw] h-[100vh] items-center justify-center">
+      <div className="rounded-lg h-fit p-6 flex flex-col gap-4 bg-white">
+        <TextInput placeholder="URL" value={url} setValue={setUrl} />
+        <TextInput
+          placeholder="Interval (seconds)"
+          value={interval}
+          setValue={setInterval}
+        />
+        <TextInput
+          placeholder="Tags (tags must be splitted by comma or whitespace)"
+          value={tags}
+          setValue={setTags}
+        />
+
+        <Button text="Add" onClick={null} />
+      </div>
+    </div>
+  );
+}
+
+export default AddPingPage;
