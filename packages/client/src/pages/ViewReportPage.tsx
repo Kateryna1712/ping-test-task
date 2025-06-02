@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/UI/Header";
 import TextInput from "../components/UI/TextInput";
 import ReportTable from "../components/ViewReportPage/ReportTable";
 import { usePingPause } from "../utils/hooks/usePausePing";
 import { useGetPingsList } from "../utils/hooks/usePingsList";
+import { useAutoPing } from "../utils/hooks/useAutoPing";
 
 function ViewReportPage() {
   const [filteringText, setFilteringText] = useState("");
@@ -11,10 +12,22 @@ function ViewReportPage() {
   const { data, deletePing } = useGetPingsList();
   const { togglePause } = usePingPause();
 
+  const { startAutoPinging, stopAutoPinging } = useAutoPing();
+
+  useEffect(() => {
+    if (data.length > 0) {
+      startAutoPinging(data as never);
+    }
+    return () => stopAutoPinging();
+  }, [data]);
+
   const handleTogglePause = (url: string, isPaused: boolean) => {
-    console.log("pause");
     togglePause(url, isPaused);
   };
+
+  const handleDeletePing = (url: string)=> {
+    deletePing(url)
+  }
 
   return (
     <div className="flex w-[100vw] h-[100vh] items-center justify-center">
@@ -33,7 +46,7 @@ function ViewReportPage() {
           monitoringItems={data as never}
           pause={handleTogglePause}
           play={handleTogglePause}
-          remove={deletePing}
+          remove={handleDeletePing}
         />
       </div>
     </div>

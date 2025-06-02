@@ -64,14 +64,14 @@ export const usePing = () => {
       const response = await axios.post("http://localhost:5000/ping", { ip });
 
       if (response.data) {
-        alert('Ping created successfully!');
+        console.log('Ping created successfully!');
         updateLocalStorage(ip, interval, tags, 'P', false);
       }
     } catch (err) {
       console.log(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       setError(message);
-      alert("Error pinging host");
+      console.log("Error pinging host");
       updateLocalStorage(ip, interval, tags, 'F', false);
       return null;
     } finally {
