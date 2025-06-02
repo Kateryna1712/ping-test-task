@@ -3,8 +3,8 @@ import React from "react";
 interface TextInputProps {
   type?: string;
   placeholder: string;
-  value: string;
-  setValue: (item: string) => void;
+  value: string | number;
+  setValue: (item: string | number) => void;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
