@@ -29,7 +29,20 @@ app.post("/ping", async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const result = await ping.promise.probe(ip);
+    const result = await ping.promise.probe(ip, {
+      timeout: 10,
+      extra: ["-c", "4"],
+    });
+
+    if (result.output.includes("cannot resolve") || result.output.includes("Unknown host")) {
+      res.status(404).json({ 
+        error: "Hostname resolution failed",
+        details: `The hostname '${ip}' could not be resolved`,
+        originalOutput: result.output.trim()
+      });
+      return;
+    }
+
     console.log(result);
     res.json(result);
   } catch (error) {
@@ -37,7 +50,6 @@ app.post("/ping", async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: "Ping failed" });
   }
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

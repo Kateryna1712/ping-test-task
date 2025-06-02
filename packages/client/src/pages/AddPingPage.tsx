@@ -9,7 +9,7 @@ function AddPingPage() {
   const [interval, setInterval] = useState("");
   const [tags, setTags] = useState("");
 
-  const { ping, isLoading, error, data } = usePing();
+  const { ping, isLoading, error} = usePing();
 
   const handlePing = async ()=>{
     await ping(url);
@@ -32,7 +32,9 @@ function AddPingPage() {
           setValue={setTags}
         />
 
-        <Button text="Add" onClick={handlePing} />
+        <Button text="Add" onClick={handlePing} disabled={isLoading} />
+
+        <span className="text-red-600">{error}</span>
       </div>
     </div>
   );
