@@ -2,11 +2,18 @@ import { useState } from "react";
 import TextInput from "../components/UI/TextInput";
 import Button from "../components/UI/Button";
 import Header from "../components/UI/Header";
+import { usePing } from "../utils/router/hooks/usePing";
 
 function AddPingPage() {
   const [url, setUrl] = useState("");
   const [interval, setInterval] = useState("");
   const [tags, setTags] = useState("");
+
+  const { ping, isLoading, error, data } = usePing();
+
+  const handlePing = async ()=>{
+    await ping(url);
+  }
 
   return (
     <div className="flex w-[100vw] h-[100vh] items-center justify-center">
@@ -25,7 +32,7 @@ function AddPingPage() {
           setValue={setTags}
         />
 
-        <Button text="Add" onClick={null} />
+        <Button text="Add" onClick={handlePing} />
       </div>
     </div>
   );

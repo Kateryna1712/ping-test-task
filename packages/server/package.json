@@ -13,12 +13,18 @@
   "license": "ISC",
   "packageManager": "pnpm@10.11.0",
   "dependencies": {
+    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "ping": "^0.4.4"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
+    "@types/node": "^22.15.29",
+    "@types/ping": "^0.4.4",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3"
