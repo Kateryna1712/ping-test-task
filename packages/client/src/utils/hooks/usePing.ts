@@ -64,8 +64,8 @@ export const usePing = () => {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:5000/ping", { ip });
-
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/ping`, { ip });
+      console.log(import.meta.env.VITE_API_URL)
       if (response.data) {
         console.log('Ping created successfully!');
         notify(`Ping for url ${ip} created successfully!`)
