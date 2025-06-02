@@ -30,7 +30,6 @@ export const usePingPause = () => {
       localStorage.setItem('data', JSON.stringify(dataFromLs));
       return true;
     } catch (err) {
-      console.error(err);
       const message = err instanceof Error ? err.message : "Unknown error occurred";
       setError(message);
       return false;

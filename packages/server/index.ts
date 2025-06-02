@@ -42,8 +42,6 @@ app.post("/ping", async (req: Request, res: Response): Promise<void> => {
       });
       return;
     }
-
-    console.log(result);
     res.json(result);
   } catch (error) {
     console.error("Ping error:", error);

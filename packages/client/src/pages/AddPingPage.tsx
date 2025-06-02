@@ -17,7 +17,6 @@ function AddPingPage() {
       return;
     }
     const tagsArray = tags.split(/[,\s]+/).filter((tag) => tag.trim() !== "");
-    console.log(tagsArray);
     await ping(url, interval, tagsArray);
   };
 
