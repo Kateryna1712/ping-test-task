@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 export interface PingItemFromLS {
   url: string,
@@ -22,6 +23,8 @@ export const usePing = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<PingItemFromLS[] | []>([]);
+
+  const notify = (value:string) => toast(value);
 
   const updateLocalStorage = (ip: string, interval: number, tags: string[], status: 'P' | 'F', isPaused: boolean) => {
     const existingData = localStorage.getItem('data');
@@ -65,13 +68,15 @@ export const usePing = () => {
 
       if (response.data) {
         console.log('Ping created successfully!');
+        notify(`Ping for url ${ip} created successfully!`)
         updateLocalStorage(ip, interval, tags, 'P', false);
       }
     } catch (err) {
       console.log(err);
       const message = err instanceof Error ? err.message : "Unknown error";
       setError(message);
-      console.log("Error pinging host");
+      console.log(message);
+      notify(`Error pinging host ${ip}`)
       updateLocalStorage(ip, interval, tags, 'F', false);
       return null;
     } finally {
