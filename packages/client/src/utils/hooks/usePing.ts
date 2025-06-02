@@ -20,9 +20,22 @@ export const usePing = () => {
     try {
       const response = await axios.post("http://localhost:5000/ping", { ip });
       setData(response.data);
+
+      console.log(response.data)
+
+      if (response.data) {
+        alert('Ping created successfully!');
+        
+        const existingData = localStorage.getItem('data');
+        const dataFromLs = existingData ? JSON.parse(existingData) : [];
+        
+        localStorage.setItem('data', JSON.stringify([...dataFromLs, response.data]));
+      }
     } catch (err) {
+      console.log(err)
       const message = err instanceof Error ? err.message : "Unknown error";
       setError(message);
+      alert("Error pinging host")
       return null;
     } finally {
       setIsLoading(false);

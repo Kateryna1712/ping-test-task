@@ -2,16 +2,20 @@ import { useState } from "react";
 import TextInput from "../components/UI/TextInput";
 import Button from "../components/UI/Button";
 import Header from "../components/UI/Header";
-import { usePing } from "../utils/router/hooks/usePing";
+import { usePing } from "../utils/hooks/usePing";
 
 function AddPingPage() {
   const [url, setUrl] = useState("");
   const [interval, setInterval] = useState("");
   const [tags, setTags] = useState("");
 
-  const { ping, isLoading, error} = usePing();
+  const { ping, isLoading} = usePing();
 
   const handlePing = async ()=>{
+    if(!url || !interval || !tags){
+      alert('Complete all form fields')
+      return
+    }
     await ping(url);
   }
 
@@ -33,8 +37,6 @@ function AddPingPage() {
         />
 
         <Button text="Add" onClick={handlePing} disabled={isLoading} />
-
-        <span className="text-red-600">{error}</span>
       </div>
     </div>
   );
