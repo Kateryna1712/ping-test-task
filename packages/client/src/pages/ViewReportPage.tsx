@@ -3,30 +3,41 @@ import Header from "../components/UI/Header";
 import TextInput from "../components/UI/TextInput";
 import ReportTable from "../components/ViewReportPage/ReportTable";
 import { usePingPause } from "../utils/hooks/usePausePing";
-import { useGetPingsList, type PingItemFromLS } from "../utils/hooks/usePingsList";
+import {
+  useGetPingsList,
+  type PingItemFromLS,
+} from "../utils/hooks/usePingsList";
 import { useAutoPing } from "../utils/hooks/useAutoPing";
 
 function ViewReportPage() {
   const [filteringText, setFilteringText] = useState("");
-  const { data, deletePing, getPings } = useGetPingsList(); 
+  const { data, deletePing, getPings } = useGetPingsList();
   const { togglePause } = usePingPause();
   const { startAutoPinging, stopAutoPinging } = useAutoPing();
   const [filteredData, setFilteredData] = useState<PingItemFromLS[]>(data);
 
   useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      window.location.reload();
+    }, 30000);
+
+    return () => clearInterval(refreshInterval);
+  }, []);
+
+  useEffect(() => {
     stopAutoPinging();
-    
+
     if (data.length > 0) {
       const timer = setTimeout(() => {
         startAutoPinging(data as never);
       }, 100);
-      
+
       return () => {
         clearTimeout(timer);
         stopAutoPinging();
       };
     }
-    
+
     return () => stopAutoPinging();
   }, [data]);
 
@@ -34,8 +45,8 @@ function ViewReportPage() {
     if (!filteringText.trim()) {
       setFilteredData(data);
     } else {
-      const filteredArray = data.filter(item =>
-        item.tags.some(tag =>
+      const filteredArray = data.filter((item) =>
+        item.tags.some((tag) =>
           tag.toLowerCase().includes(filteringText.toLowerCase())
         )
       );
