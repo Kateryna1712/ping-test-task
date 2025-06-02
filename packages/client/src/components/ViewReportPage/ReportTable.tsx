@@ -4,9 +4,10 @@ interface ReportTableProps {
   monitoringItems: PingItemFromLS[];
   play: (url: string, isPaused: boolean) => void;
   pause: (url: string, isPaused: boolean) => void;
+  remove: (url: string) => void;
 }
 
-const ReportTable = ({ monitoringItems, play, pause }: ReportTableProps) => {
+const ReportTable = ({ monitoringItems, play, pause, remove }: ReportTableProps) => {
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
       <table className="min-w-full divide-y divide-gray-200">
@@ -80,6 +81,7 @@ const ReportTable = ({ monitoringItems, play, pause }: ReportTableProps) => {
                     Pause
                   </button>
                   <button
+                    onClick={()=>remove(item.url)}
                     className="text-red-600 hover:text-red-800"
                     title="Delete"
                   >

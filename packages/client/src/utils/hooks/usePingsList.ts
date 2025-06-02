@@ -32,9 +32,35 @@ export const useGetPingsList = () => {
     }
   };
 
+  const deletePing = (url: string) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const existingData = localStorage.getItem('data');
+      if (!existingData) {
+        throw new Error("No ping data found in localStorage");
+      }
+
+      const dataFromLs: PingItemFromLS[] = JSON.parse(existingData);
+      const updatedData = dataFromLs.filter(item => item.url !== url);
+
+      localStorage.setItem('data', JSON.stringify(updatedData));
+      setData(updatedData);
+      return true;
+    } catch (err) {
+      console.error(err);
+      const message = err instanceof Error ? err.message : "Unknown error occurred while deleting ping";
+      setError(message);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     getPings();
   }, []);
 
-  return { getPings, isLoading, error, data };
+  return { getPings, deletePing, isLoading, error, data };
 };
