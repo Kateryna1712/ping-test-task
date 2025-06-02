@@ -1,11 +1,12 @@
 import type { PingItemFromLS } from "../../utils/hooks/usePing";
 
 interface ReportTableProps {
-  monitoringItems: PingItemFromLS[]
+  monitoringItems: PingItemFromLS[];
+  play: (url: string, isPaused: boolean) => void;
+  pause: (url: string, isPaused: boolean) => void;
 }
 
-const ReportTable = ({monitoringItems}: ReportTableProps) => {
-
+const ReportTable = ({ monitoringItems, play, pause }: ReportTableProps) => {
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
       <table className="min-w-full divide-y divide-gray-200">
@@ -65,10 +66,14 @@ const ReportTable = ({monitoringItems}: ReportTableProps) => {
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <div className="flex space-x-2">
-                  <button className="text-blue-600 hover:text-blue-800">
+                  <button
+                    onClick={()=>play(item.url, false)}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
                     Play
                   </button>
                   <button
+                    onClick={()=>pause(item.url, true)}
                     className="text-yellow-600 hover:text-yellow-800"
                     title="Pause"
                   >
@@ -86,8 +91,9 @@ const ReportTable = ({monitoringItems}: ReportTableProps) => {
           ))}
         </tbody>
       </table>
-      {monitoringItems.length===0?<span className="p-2 text-center">The list of pings is empty</span>:null}
-
+      {monitoringItems.length === 0 ? (
+        <span className="p-2 text-center">The list of pings is empty</span>
+      ) : null}
     </div>
   );
 };
